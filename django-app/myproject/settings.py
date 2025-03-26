@@ -83,11 +83,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djangodb',
-        'USER': 'mysqladmin',
-        'PASSWORD': 'Sagefahd@123',
-        'HOST': 'django-mysql-server1.mysql.database.azure.com',
-        'PORT': '3306',
+        'NAME': os.getenv('DB_NAME', 'djangodb'),  # Default to 'djangodb' if not set
+        'USER': os.getenv('DB_USER', 'mysqladmin'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'defaultpassword'),
+        'HOST': os.getenv('DB_HOST', 'django-mysql-server1.mysql.database.azure.com'),
+        'PORT': os.getenv('DB_PORT', '3306'),
         'OPTIONS': {
             'ssl': {
                 'ca': os.path.join(BASE_DIR, 'certs', 'DigiCertGlobalRootCA.crt.pem')
