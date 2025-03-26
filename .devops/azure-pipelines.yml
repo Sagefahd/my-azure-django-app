@@ -27,14 +27,14 @@ stages:
           # Initialize Terraform
           - script: |
               echo "Initializing Terraform..."
-              cd terraform
+              cd containerApp
               terraform init
             displayName: "Terraform Init"
 
           # Apply Terraform
           - script: |
               echo "Applying Terraform..."
-              cd terraform
+              cd containerApp
               terraform apply -auto-approve
             displayName: "Terraform Apply"
 

@@ -1,0 +1,32 @@
+# .azuredevops/pr-merge-pipeline.yml
+trigger:
+  branches:
+    include:
+      - main  # Runs after PR merges to main
+
+pr:
+  branches:
+    include:
+      - main  # Runs checks during PR creation
+
+stages:
+  - stage: Validate
+    jobs:
+      - job: Terraform_Plan
+        steps:
+          - script: |
+              cd containerApp
+              terraform init
+              terraform plan
+            displayName: "Check Terraform Changes"
+
+  - stage: Deploy
+    dependsOn: Validate
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')  # Only after merge
+    jobs:
+      - job: Apply_Changes
+        steps:
+          - script: |
+              cd containerApp
+              terraform apply -auto-approve
+            displayName: "Deploy to Azure"
